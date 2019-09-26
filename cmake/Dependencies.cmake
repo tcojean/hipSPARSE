@@ -26,13 +26,16 @@
 # Git
 find_package(Git REQUIRED)
 
-# HIP
-find_package(hip REQUIRED)
-
-# Either rocSPARSE or cuSPARSE is required
+# Either rocSPARSE or cuSPARSE is required.
+# Since hip is available only for hcc platforms, use HIP for nvcc platforms.
 if(NOT BUILD_CUDA)
+  find_package(hip REQUIRED)
+
   find_package(rocsparse REQUIRED)
 else()
+  find_package(HIP REQUIRED)
+  set(HIP_INCLUDE_DIRS "${HIP_ROOT_DIR}/include")
+
   find_package(CUDA REQUIRED)
 endif()
 

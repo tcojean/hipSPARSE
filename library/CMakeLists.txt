@@ -112,11 +112,19 @@ rocm_install_targets(TARGETS hipsparse
 )
 
 # Export targets
-rocm_export_targets(TARGETS roc::hipsparse
-                    PREFIX hipsparse
-                    DEPENDS PACKAGE hip
-                    NAMESPACE roc::
-)
+if (BUILD_CUDA)
+	# Since `hip` package is only available for `hcc` backend, do not add the dependency.
+  rocm_export_targets(TARGETS roc::hipsparse
+                      PREFIX hipsparse
+                      NAMESPACE roc::
+  )
+else()
+  rocm_export_targets(TARGETS roc::hipsparse
+                      PREFIX hipsparse
+                      DEPENDS PACKAGE hip
+                      NAMESPACE roc::
+  )
+endif()
 
 # Symbolic links
 rocm_install_symlink_subdir(hipsparse)
