@@ -31,10 +31,17 @@ else()
   set(CMAKE_INSTALL_PREFIX "/opt/rocm" CACHE PATH "Install path prefix, prepended onto install directories")
 endif()
 
+# Get HIP_PATH
+if( NOT DEFINED ENV{HIP_PATH} )
+  set( HIP_PATH "/opt/rocm/hip" )
+else()
+  set( HIP_PATH $ENV{HIP_PATH} )
+endif()
+
 # CMake modules
 list(APPEND CMAKE_MODULE_PATH
      ${CMAKE_CURRENT_SOURCE_DIR}/cmake
-     /opt/rocm/hip/cmake
+     ${HIP_PATH}/cmake
 )
 
 # Set a default build type if none was specified
